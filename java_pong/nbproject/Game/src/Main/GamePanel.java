@@ -5,11 +5,14 @@
  */
 package Main;
 
+import GameState.GameStateManager;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
@@ -17,7 +20,7 @@ import javax.swing.JPanel;
  *
  * @author primary
  */
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 	// constants 
 	private static final long ONE_SECOND = 1000000000; //10^9 nanoseconds in a second
@@ -43,7 +46,8 @@ public class GamePanel extends JPanel implements Runnable {
 	private Graphics2D g;
 
 	// game state manager
-//	private GameStateManager gsm;
+	private GameStateManager gsm;
+
 	public GamePanel() {
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		this.setFocusable(true);
@@ -57,7 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
 		super.addNotify();
 		if (thread == null) {
 			thread = new Thread(this);
-//			addKeyListener(this);
+			addKeyListener(this);
 			thread.start();
 		}
 	}
@@ -72,21 +76,25 @@ public class GamePanel extends JPanel implements Runnable {
 		long wait;
 
 		while (running) {
-			
+
 			start = System.nanoTime();
 
+			update();
+			draw();	
 			drawToScreen();
+
+			frameCounter++;
 
 			elapsed = System.nanoTime() - start;
 			wait = targetTime - elapsed / 1000000;
 
-			if (wait <= 0){
+			if (wait <= 0) {
 				wait = 0;
 			}
 
-			try{
+			try {
 				thread.sleep(wait);
-			} catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
@@ -110,21 +118,34 @@ public class GamePanel extends JPanel implements Runnable {
 		titleColor = new Color(128, 0, 0);
 		titleFont = new Font("Century Gothic", Font.PLAIN, 28);
 
-//		gsm = new GameStateManager();
+		gsm = new GameStateManager();
 	}
 
 	private void update() {
-//		gsm.update();
+		gsm.update();
 	}
 
 	private void draw() {
-//		gsm.draw(g);
+		gsm.draw(g);
 	}
 
 	private void drawToScreen() {
-		frameCounter++;
 		Graphics g2 = getGraphics();
 		g2.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 		g2.dispose();
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent key) {
+		gsm.keyPressed(key.getKeyCode());
+	}
+
+	@Override
+	public void keyReleased(KeyEvent key) {
+		gsm.keyReleased(key.getKeyCode());
 	}
 }
