@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game;
+package Main;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,7 +25,7 @@ public class GamePanel extends JPanel implements Runnable {
 	// dimensions
 	public static final int WIDTH = 320;
 	public static final int HEIGHT = 240;
-	public static final int SCALE = 3;
+	public static final int SCALE = 1;
 
 	// game thread
 	private Thread thread;
@@ -36,8 +36,8 @@ public class GamePanel extends JPanel implements Runnable {
 	private Color titleColor;
 	private Font titleFont;
 
-	private int FPS = 60;
-//	private long targetTime = 1000 / FPS;
+	private int FPS = 30;
+	private long targetTime = 1000 / FPS;
 	// image
 	private BufferedImage image;
 	private Graphics2D g;
@@ -64,33 +64,41 @@ public class GamePanel extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("run method called");
-
 		init();
 
 		long start;
-		long elapsed = 0;
+		long elapsed;
+		long elapsed_sum = 0;
 		long wait;
 
 		while (running) {
-
+			
 			start = System.nanoTime();
 
 			drawToScreen();
 
-			elapsed += System.nanoTime() - start;
+			elapsed = System.nanoTime() - start;
+			wait = targetTime - elapsed / 1000000;
 
-			// Calculating FPS
-			if (elapsed >= ONE_SECOND) {
-				System.out.println("FPS=" + frameCounter);
-//				drawFPS();
-				frameCounter = 0;
-				elapsed = 0;
+			if (wait <= 0){
+				wait = 0;
 			}
-//			System.out.println(elapsed + "                   " + frameCounter);
-		}
 
-//		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+			try{
+				thread.sleep(wait);
+			} catch(Exception e){
+				e.printStackTrace();
+			}
+
+			elapsed = System.nanoTime() - start;
+			elapsed_sum += elapsed;
+			// Calculating FPS
+			if (elapsed_sum >= ONE_SECOND) {
+				System.out.println("FPS=" + frameCounter);
+				frameCounter = 0;
+				elapsed_sum = 0;
+			}
+		}
 	}
 
 	private void init() {
@@ -118,14 +126,5 @@ public class GamePanel extends JPanel implements Runnable {
 		Graphics g2 = getGraphics();
 		g2.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 		g2.dispose();
-	}
-
-	private void drawFPS(){
-
-		// draw fps counter
-		g.setColor(titleColor);
-		g.setFont(titleFont);
-		g.drawString(Integer.toString(frameCounter), 70, 60);
-
 	}
 }

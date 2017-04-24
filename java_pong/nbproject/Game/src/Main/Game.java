@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game;
+package Main;
 
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
