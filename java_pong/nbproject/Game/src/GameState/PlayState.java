@@ -7,8 +7,8 @@ package GameState;
 
 //import TileMap.Background;
 //import TileMap.TileMap;
-import Main.GamePanel;
-//import Entity.*;
+//import Main.GamePanel;
+import Entity.*;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -17,12 +17,11 @@ import java.awt.event.KeyEvent;
  *
  * @author sadan
  */
-public class PlayState extends GameState{
+public class PlayState extends GameState {
 
 //	private TileMap tileMap;
 //	private Background bg;
-
-//	private Player player;
+	private Paddle paddle;
 
 	public PlayState(GameStateManager gsm) {
 //		this.gsm = gsm;
@@ -37,16 +36,17 @@ public class PlayState extends GameState{
 //		tileMap.loadTiles("/res/grasstileset.gif");
 //		tileMap.loadMap("/res/level1-1.map");
 //		tileMap.setPosition(0, 0);
-
 //		bg = new Background("/res/grassbg1.gif", 0.1);
 //		player = new Player(tileMap);
 //		player.setPosition(100, 100);
+		paddle = new Paddle();
+		paddle.setPosition(100, 100);
 	}
 
 	@Override
 	public void update() {
 		//update player
-//		player.update();
+		paddle.update();
 //		tileMap.setPosition(GamePanel.WIDTH / 2 - player.getx(), GamePanel.HEIGHT / 2 - player.gety());
 	}
 
@@ -55,27 +55,28 @@ public class PlayState extends GameState{
 
 		// draw background
 //		bg.draw(g);
-
 		// draw tilemap
 //		tileMap.draw(g);
-
 		// draw player
-//		player.draw(g);
+		paddle.draw(g);
 	}
 
 	@Override
 	public void keyPressed(int k) {
+		if (k == KeyEvent.VK_ESCAPE) {
+			System.exit(0);
+		}
 		if (k == KeyEvent.VK_LEFT) {
-//			player.setLeft(true);
+			paddle.setLeft(true);
 		}
 		if (k == KeyEvent.VK_RIGHT) {
-//			player.setRight(true);
+			paddle.setRight(true);
 		}
 		if (k == KeyEvent.VK_UP) {
-//			player.setUp(true);
+			paddle.setUp(true);
 		}
 		if (k == KeyEvent.VK_DOWN) {
-//			player.setDown(true);
+			paddle.setDown(true);
 		}
 		if (k == KeyEvent.VK_W) {
 //			player.setJumping(true);
@@ -94,16 +95,16 @@ public class PlayState extends GameState{
 	@Override
 	public void keyReleased(int k) {
 		if (k == KeyEvent.VK_LEFT) {
-//			player.setLeft(false);
+			paddle.setLeft(false);
 		}
 		if (k == KeyEvent.VK_RIGHT) {
-//			player.setRight(false);
+			paddle.setRight(false);
 		}
 		if (k == KeyEvent.VK_UP) {
-//			player.setUp(false);
+			paddle.setUp(false);
 		}
 		if (k == KeyEvent.VK_DOWN) {
-//			player.setDown(false);
+			paddle.setDown(false);
 		}
 		if (k == KeyEvent.VK_W) {
 //			player.setJumping(false);
