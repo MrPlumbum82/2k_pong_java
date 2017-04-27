@@ -24,3 +24,21 @@
 ```bash
 	java -cp build/ Frame
 ```
+
+### Scope of the Game
+
+Single player (vs AI)
+Local Mutli player (2, 4, 6, 8)
+Power Ups
+2 Dimentional Movement (like windjammers)
+Four keys to move, one key to activate powerup, two keys for jabs (forward push)
+Different Maps
+
+Audio Settings
+Video Settings
+Game Settings
+Change Hotkeys
+Acheivments
+Save progress in a directory (no login or users, just highscores list)
+Credits
+
