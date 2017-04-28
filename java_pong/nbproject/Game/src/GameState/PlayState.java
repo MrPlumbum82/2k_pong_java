@@ -22,6 +22,7 @@ public class PlayState extends GameState {
 //	private TileMap tileMap;
 //	private Background bg;
 	private Paddle paddle;
+	private Ball ball;
 
 	public PlayState(GameStateManager gsm) {
 //		this.gsm = gsm;
@@ -41,12 +42,15 @@ public class PlayState extends GameState {
 //		player.setPosition(100, 100);
 		paddle = new Paddle();
 		paddle.setPosition(100, 100);
+		ball = new Ball();
+		ball.setPosition(15, 15);
 	}
 
 	@Override
 	public void update() {
 		//update player
 		paddle.update();
+		ball.update();
 //		tileMap.setPosition(GamePanel.WIDTH / 2 - player.getx(), GamePanel.HEIGHT / 2 - player.gety());
 	}
 
@@ -59,6 +63,7 @@ public class PlayState extends GameState {
 //		tileMap.draw(g);
 		// draw player
 		paddle.draw(g);
+		ball.draw(g);
 	}
 
 	@Override
